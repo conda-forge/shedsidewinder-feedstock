@@ -12,18 +12,18 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   noarch: python
-  script: python -m pip install --no-deps --ignore-installed .
+  script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
     - sidewind = shed_sidewinder.main:main
 
 requirements:
-  build:
-    - python >=3.5
+  host:
+    - python {{ python_min }}
     - pip
   run:
-    - python >=3.5
+    - python >={{ python_min }}
     - h5py
     - bluesky
     - numpy
@@ -33,6 +33,8 @@ requirements:
     - fabio
 
 test:
+  requires:
+    - python {{ python_min }}
   commands:
     - sidewind -h
     - sidewind init -h 
